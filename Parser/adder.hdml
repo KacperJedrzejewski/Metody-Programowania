@@ -1,0 +1,1 @@
+tests(nested_comments, input("(* this (* aonther *) comment *)"), program([])).
