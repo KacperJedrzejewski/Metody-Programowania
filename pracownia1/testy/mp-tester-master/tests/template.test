@@ -1,0 +1,9 @@
+% zamień template_test na nazwę modułu testowego np. imie_nazwisko_test
+:- module(template_test, [tests/5]).
+
+% operatory mogą, ale nie muszą być tutaj zdefiniowane, są już automatycznie dostępne
+:- op(200, fx, ~).
+:- op(500, xfy, v).
+
+% tests
+tests(test_case, validity, [p v p v p v p], 500, count(1)).

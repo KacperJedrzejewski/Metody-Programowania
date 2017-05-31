@@ -1,0 +1,56 @@
+:- module(pawel_smolak_test, [tests/5]).
+
+:- op(200, fx, ~).
+:- op(500, xfy, v).
+
+% czy program zwraca duplikaty
+tests(duplicates, validity, [p v p v p v p], 500, count(1)).
+tests(duplicates2, validity, [p, p, p, p], 500, count(1)).
+tests(duplicates3, validity, [p v p v p, p v p v p], 500, count(1)).
+
+% czy program nie zatrzymuje się po jednym, poprawnie znalezionym rozwiązaniu
+tests(backtrack, validity, [p v q], 500, count(3)).
+
+% czy program przeszukuje wszystkie rozwiązania?
+tests(search_for_all_solutions, validity, [p v ~p, q v ~q, r v ~r, s v ~s], 500, count(16)).
+tests(search_for_all_solutions2, validity, [~p v q, ~q v r, ~r v s, ~s], 500, count(1)).
+
+% czy program znajduje prawidłowe wartościwanie
+tests(search_for_all_solutions2, validity, [~p v q, ~q v r, ~r v s, ~s], 500, solution([(p,f), (q,f), (r,f), (s,f)])).
+
+% test ze względu na ilość wartościowań: tautologie
+tests(tautology_c, validity, [p v ~p, q v ~q], 500, count(4)).
+tests(tautology_s, validity, [p v ~p, q v ~q], 500, solution([(p,t), (q,f)])).
+
+% test ze względu na ilość wartościowań: sprzeczne zbiory klauzul
+tests(no_solutions, validity, [p, ~p, q v s], 500, count(0)).
+
+% test ze względu na strukturę zbioru klauzul: zbiór pusty
+tests(no_clouses_c, validity, [], 500, count(1)).
+tests(no_clauses_s, validity, [], 500, solution([])).
+
+% test ze względu na strukturę zbioru klauzul: zbiór zawierający pustą klauzulę
+tests(empty_clause_only, validity, [[]], 500, count(0)).
+
+% test ze względu na strukturę zbioru klauzul: zbiór zawierający pustą klauzulę i klauzulę spełnialną
+tests(with_empty_clause, validity, [p v q, p v ~p, []], 500, count(0)).
+
+tests(generator, performance, [~j v k v ~c v g, ~i v o v ~b v f, ~h v n v ~f v e, ~g v m v ~e v i, ~f v l v ~d v h], 5000, count(11520)).
+
+% program bezmyślnie przeszukujący całe drzewo przeszukiwań powinien przekroczyć limit czasowy
+tests(
+	search_for_empty_clause,
+	performance, 
+	[a1 v a2 v a3 v a4 v a5 v a6 v a7 v a8 v a9 v a10 v a11 v a12 v a13 v a14 v a15 v a16 v a17 v a18 v a19 v a20 v a21 v a22 v a23 v a24 v a25 v a26 v a27 v a28 v a29 v a30 v a31 v a32 v a33 v a34 v a35 v a36 v a37 v a38 v a39 v a40 v a41 v a42 v a43 v a44 v a45 v a46 v a47 v a48 v a49 v a50 v a51 v a52 v a53 v a54 v a55 v a56 v a57 v a58 v a59 v a60 v a61 v a62 v a63 v a64 v a65 v a66 v a67 v a68 v a69 v a70 v a71 v a72 v a73 v a74 v a75 v a76 v a77 v a78 v a79 v a80 v a81 v a82 v a83 v a84 v a85 v a86 v a87 v a88 v a89 v a90 v a91 v a92 v a93 v a94 v a95 v a96 v a97 v a98 v a99 v a100, []],
+	1000,
+       	count(0)
+).
+
+% staraj się najpierw wyszukać wykluczające się klauzule np. [p] oraz [~p]
+tests(
+	search_for_exclusive_clauses,
+	performance,
+	[~p, a1 v a2 v a3 v a4 v a5 v a6 v a7 v a8 v a9 v a10 v a11 v a12 v a13 v a14 v a15 v a16 v a17 v a18 v a19 v a20 v a21 v a22 v a23 v a24 v a25 v a26 v a27 v a28 v a29 v a30 v a31 v a32 v a33 v a34 v a35 v a36 v a37 v a38 v a39 v a40 v a41 v a42 v a43 v a44 v a45 v a46 v a47 v a48 v a49 v a50 v a51 v a52 v a53 v a54 v a55 v a56 v a57 v a58 v a59 v a60 v a61 v a62 v a63 v a64 v a65 v a66 v a67 v a68 v a69 v a70 v a71 v a72 v a73 v a74 v a75 v a76 v a77 v a78 v a79 v a80 v a81 v a82 v a83 v a84 v a85 v a86 v a87 v a88 v a89 v a90 v a91 v a92 v a93 v a94 v a95 v a96 v a97 v a98 v a99, p],
+	500,
+	count(0)
+).

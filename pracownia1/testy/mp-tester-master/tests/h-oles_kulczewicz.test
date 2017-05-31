@@ -1,0 +1,31 @@
+:- module(oles_kulczewicz_tests, [tests/5]).
+
+:- op(200, fx, ~).
+:- op(500, xfy, v).
+
+tests(alt_taut, validity, [p v p], 500, solution([(p,t)])).
+tests(conj_taut, validity, [p, p], 500, solution([(p,t)])).
+tests(alt, validity, [p v q], 500, solution([(p,f), (q,t)])).
+tests(alt_neg, validity, [p v ~q], 500, solution([(p,f), (q,f)])).
+tests(alt_double_neg, validity, [~p v ~q], 500, solution([(p,t), (q,f)])).
+tests(conj, validity, [p, q], 500, solution([(p,t), (q,t)])).
+tests(conj_neg, validity, [~p, q], 500, solution([(p,f), (q,t)])).
+tests(conj_double_neg, validity, [~p, ~q], 500, solution([(p,f), (q,f)])).
+tests(contradiction, validity, [p, ~p], 500, count(0)).
+tests(conj_alt_neg, validity, [p, q v ~p], 500, solution([(p,t), (q,t)])).
+tests(absorbtion, validity, [p, p v q], 500, solution([(p,t), (q,f)])).
+tests(double_literal, validity, [p, q v ~p, p], 500, solution([(p,t), (q,t)])).
+tests(complex_contradiction, validity, [p v q, p v ~q, ~p v q, ~p v ~q], 500, count(0)).
+tests(double_clause, validity, [p v q, ~p v ~q, p v q], 500, solution([(p,t), (q,f)])).
+tests(resolution, validity, [p v q, p v r], 500, solution([(p,t), (q,f), (r,f)])).
+tests(strange_resolution, validity, [p v q, p v ~q], 500, solution([(p,t), (q,f)])).
+tests(conj_3, validity, [p, ~q, r], 500, solution([(p,t), (q,f), (r,t)])).
+tests(alt_conj_3, validity, [p v ~q, r], 500, solution([(p,t), (q,f), (r,t)])).
+tests(alt_conj_neg_3, validity, [p v q, r, ~p], 500, solution([(p,f), (q,t), (r,t)])).
+tests(alt_conj_neg_literal_3, validity, [p v q, ~p v ~q v ~r, r], 500, solution([(p,t), (q,f), (r,t)])).
+tests(whatever, validity, [p v q, ~q v p, r v q], 500, solution([(p,t), (q,t), (r,f)])).
+tests(nevermind, validity, [~p, q v p, ~r v q, r], 500, solution([(p,f), (q,t), (r,t)])).
+tests(alt_4, validity, [p v ~q v r v l] , 500, solution([(p,t), (q,f), (r,t), (l,f)])).
+tests(conj_4, validity, [p, q, ~r, l], 500, solution([(p,t), (q,t), (r,f), (l,t)])).
+tests(conj_alt_4, validity, [~p, q, ~r v p, l], 500, solution([(p,f), (q,t), (r,f), (l,t)])).
+tests(double_alt_4, validity, [~p v q, r v l], 500, solution([(p,f), (q,f), (r,t), (l,f)])).

@@ -1,0 +1,26 @@
+:- module(michal_lazowski_tests, [tests/5]).
+
+% definiujemy operatory ~/1 oraz v/2
+:- op(200, fx, ~).
+:- op(500, xfy, v).
+
+
+% Zbiór faktów definiujących testy
+% Należy zdefiniować swoje testy
+tests(excluded_middle, validity, [p v ~p], 500, solution([(p,t)])).
+tests(takie_same_odwrocone_klauzule, validity, [p v ~p, ~p v p], 500, count(2)).
+tests(powtorzenie_klauzul, validity, [~p v p, ~p v p], 500, count(2)).
+tests(powtorzenie_literalow_w_klauzuli, validity, [p v ~p v ~p, ~p v p v p], 500, count(2)).
+tests(klauzule_i_dwa_sprzeczne_singletony, validity, [p, p v ~p, q, q v r, ~p], 500, count(0)).
+tests(wiele_zmiennych_jedna_klauzula, validity, [a v b v c v d v e v g v k], 1000, count(127)).
+tests(singleton_i_jego_negacja_w_innej_klauzuli, validity, [p, a v b v ~p], 500, count(3)).
+tests(spelnialne_kilka_kaluzul_roznych_zmiennych, validity, [a v b, c v d, e v k], 500, count(27)).
+tests(zbior_z_kaluzula_pusta, validity, [p v ~p, []], 500, count(0)).
+tests(seplnialne_kila_klauzul_wspole_literaly, validity, [a v b, b v c, c v d, d v e, e v k], 500, count(21)).
+tests(kilka_klazul_jedno_rozwiazanie, validity, [~a v ~b, a, b v ~c, c v ~d, d v ~e, e v ~k], 1000, solution([(a, t), (b, f), (c, f), (d, f), (e, f), (k, f)])).
+tests(kilka_sprzecznych_klauzul, validity, [~a v ~b, a, b v ~c, c v ~d, d v ~e, e v ~k, k], 1000, count(0)).
+tests(singleton, validity, [p], 500, solution([(p,t)])).
+tests(dwa_singletony_i_klauzula_pusta, validity, [p, q, []], 500, count(0)).
+tests(dwa_sprzeczne_singletony_i_klauzula_pusta, validity, [~p, p, []], 500, count(0)).
+tests(wydajnosciowy1, performance, [~n v b v ~c, ~m v n v ~b, ~l v m v ~n, ~k v l v ~m, ~j v k v ~l, ~i v j v ~k, ~h v i v ~j, ~g v h v ~i, ~f v g v ~h, ~e v f v ~g, ~d v e v ~f, ~c v d v ~e, ~b v c v ~d], 5000, count(1497)).
+tests(wydajnosciowy2, performance, [~j v k v ~c v g, ~i v o v ~b v f, ~h v n v ~f v e, ~g v m v ~e v i, ~f v l v ~d v h], 5000, count(11520)).
